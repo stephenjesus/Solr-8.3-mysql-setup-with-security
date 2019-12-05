@@ -1,0 +1,18 @@
+  <!-- stephen -->
+<dataConfig>
+<dataSource type="JdbcDataSource"
+driver="com.mysql.jdbc.Driver"
+url="jdbc:mysql://localhost:3306/test"
+user="root"
+password="123456"/>
+<document>
+<entity name="users"
+query="SELECT * FROM users">
+<field column="id" name="id"/> 
+<field column="name" name="name"/>
+</entity>
+<!-- <entity name="id" query="select first_name as 'id' , first_name, last_name, age, sex, income from EMPLOYEE ;" /> -->
+</document>
+</dataConfig>
+
+<!-- mysql -h192.168.86.109 -uroot -pExamly@123$ -->

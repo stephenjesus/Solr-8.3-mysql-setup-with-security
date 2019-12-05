@@ -1,0 +1,277 @@
+
+
+https://github.com/vikash32/indexing-mysql-table-into-solr
+
+<lib dir="/home/stephen/Downloads/solr-5.0.0/contrib/dataimporthandler/lib" regex=".*\.jar" />
+<lib dir="/home/stephen/Downloads/solr-5.0.0/dist/" regex="solr-dataimporthandler-\d.*\.jar" /> 
+    <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+     <lst name="defaults"> 
+       <str name="config">db-data-config.xml</str> 
+      </lst> 
+    </requestHandler>
+
+
+
+
+<entity name="usersdata"
+query="SELECT * FROM users">
+<field column="id" name="id"/>
+<field column="name" name="name"/>
+</entity>
+
+
+https://atomate.net/blog/setup-solr-6-x-with-mysql/
+
+
+create table users(
+   id varchar(30),
+   name varchar(30),
+   );
+
+
+ insert into users(id, name)
+   values
+   ('stephen', '5');
+
+create table EMPLOYEE(
+   first_name varchar(30),
+   last_name varchar(30),
+   age varchar(6),
+   sex varchar(1),
+   income varchar(10)
+   );
+ insert into EMPLOYEE(first_name, last_name, age, sex, income)
+   values
+   ('vikash', 'singh', '25', 'M', '12345');
+
+
+https://www.youtube.com/watch?v=BuSCfi7AsLU
+
+
+To check solr log file in ubuntu
+
+Open terminal ad go below location
+
+/opt/solr/server/logs
+
+Write below command to check live log
+
+tail -f solr.log
+
+
+
+
+
+
+
+
+bin/solr start
+bin/solr create -c myproducts
+
+
+
+
+
+
+
+
+
+
+
+
+<dataConfig>
+<dataSource type="JdbcDataSource"
+driver="com.mysql.jdbc.Driver"
+url="jdbc:mysql://localhost:3306/test"
+user="root"
+password="123456"/>
+<document>
+<entity name="id" query="select first_name as 'id' , first_name, last_name, age, sex, income from EMPLOYEE ;" />
+</document>
+</dataConfig>
+
+
+  <!-- stephen -->
+<dataConfig>
+<dataSource type="JdbcDataSource"
+driver="com.mysql.jdbc.Driver"
+url="jdbc:mysql://localhost:3306/test"
+user="root"
+password="123456"/>
+<document>
+<entity name="users"
+query="SELECT * FROM users">
+<field column="id" name="id"/> 
+<field column="name" name="name"/>
+</entity>
+<!-- <entity name="id" query="select first_name as 'id' , first_name, last_name, age, sex, income from EMPLOYEE ;" /> -->
+</document>
+</dataConfig>
+
+
+
+sort 
+
+id desc 
+
+
+fl - field list
+
+id
+
+
+ facet count
+
+
+
+
+1.Download latest 6.x Solr release from http://lucene.apache.org/solr/
+
+
+2.Open the folder and start Solr instance and create your first core
+
+
+./bin/solr start
+./bin/solr create -c products
+
+
+
+3.Open http://localhost:8983/solr/ and check that collection has been created.
+
+
+
+4. Go to ./server/solr/products/conf/solrconfig.xml and edit solrconfig.xml, add the following before existing <lib… statements:
+
+<lib dir="${solr.install.dir:../../../..}/contrib/dataimporthandler/lib" regex=".*\.jar" />
+<lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
+
+
+
+And the following to section <!– Request Handlers
+
+<requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+<lst name="defaults">
+<str name="config">solr-data-config.xml</str>
+</lst>
+</requestHandler>
+
+Save and close the file.
+
+
+5. Create a file called ./server/solr/products/conf/solr-data-config.xml with the following contents
+
+examples : -
+<dataConfig>
+<dataSource type="JdbcDataSource"
+driver="com.mysql.jdbc.Driver"
+url="jdbc:mysql://localhost:3306/db_name"
+user="root"
+password="password"/>
+<document>
+<entity name="entity_name"
+query="SELECT * FROM TABLE_NAME">
+<field column="id" name="id"/>
+<field column="name" name="name"/>
+</entity>
+</document>
+</dataConfig>
+
+<!-- mysql -h192.168.86.109 -uroot -pExamly@123$ -->
+database name - exams
+
+<dataConfig>
+<dataSource type="JdbcDataSource"
+driver="com.mysql.jdbc.Driver"
+url="jdbc:mysql://localhost:3306/exams"
+user="root"
+password="Examly@123$"/>
+<document>
+<entity name="marketplace"
+query="SELECT * FROM products">
+<field column="id" name="id"/>
+<field column="title" name="title"/>
+<field column="price" name="price"/>
+</entity>
+</document>
+</dataConfig>
+
+
+change managed schema also
+
+
+
+    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="title" type="string" stored="true" required="true" multiValued="false" />
+    <field name="status" type="string" stored="true" required="true" multiValued="false" />
+    <field name="entity_type" type="string" stored="true" required="true" multiValued="false" />
+  
+
+
+    <field name="ratings" type="pfloats" stored="true" required="true" multiValued="false" />
+    <field name="price" type="pfloats" stored="true" required="true" multiValued="false" />    
+    <field name="review_count" type="pints" stored="true" required="true" multiValued="false" />
+    <field name="product_duration" type="pints" stored="true" required="true" multiValued="false" />
+
+    
+   <field name="level" type="string" stored="true" required="false" multiValued="false" />
+   <field name="topic_ids" type="_nest_path_" stored="true" required="false" multiValued="true" />
+
+Make sure you replace username and password, and corresponding query for the entity. Describe each field as needed.
+
+
+Connect with Mysql and restart Solr
+
+6. You will need to add the following. 
+
+Download JDBC driver for MySQL from http://dev.mysql.com/downloads/connector/j/.
+
+Copy file from the downloaded archive ‘mysql-connector-java-*.jar’ to the folder ‘./contrib/dataimporthandler/lib’ in the folder where Solr was installed. Create ‘lib’ folder if needed.
+
+
+7. Restart Solr
+
+./bin/solr restart
+
+8. Go to http://localhost:8983/solr/, find your collection and add your fields as needed to the schema (select Schema in collection menu).
+
+9. Do a full import by selecting Dataimport from the menu, execute it.
+
+
+https://gist.github.com/jstrassburg/9777027
+
+
+
+
+1.  ./bin/solr restart
+
+
+2.  ./bin/solr version
+
+
+3.   ./bin/solr status
+
+
+
+
+Security purpose
+
+https://stackoverflow.com/questions/51332516/solr-7-4-0-security-json-authentication?rq=1
+
+
+{
+"authentication":{
+  "blockUnknown": true,
+  "class":"solr.BasicAuthPlugin",
+  "credentials":{"solr":"IV0EHq1OnNrj6gvRCwvFwTrZ1+z1oBbnQdiVC3otuq0=Ndd7LKvVBAaZIF0QAVi1ekCfAJXr1GGfLtRUXhgrF8c="}
+},
+"authorization":{
+  "class":"solr.RuleBasedAuthorizationPlugin",
+  "permissions":[{"name":"security-edit","role":"admin"}],
+  "user-role":{"solr":"admin"}
+}}
+
+
+curl --user solr:stephen http://localhost:8983/solr/admin/authentication -H 'Content-type:application/json' -d '{"set-user": {"solr":"stephen"}}'
+
+
+

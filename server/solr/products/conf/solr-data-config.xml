@@ -1,0 +1,16 @@
+<dataConfig>
+<dataSource type="JdbcDataSource"
+driver="com.mysql.jdbc.Driver"
+url="jdbc:mysql://192.168.86.109:3306/exams"
+user="root"
+password="Examly@123$"/>
+<document>
+<entity name="marketplace"
+query="SELECT * FROM products where entity_type='courses'">
+<!-- <field column="id" name="id"/>
+<field column="title" name="title"/>
+<field column="price" name="price"/> -->
+<!-- SELECT * FROM products where school_id='158608c5-6868-4850-8baf-f1da3d041bb2' -->
+</entity>
+</document>
+</dataConfig>
